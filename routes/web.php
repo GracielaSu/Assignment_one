@@ -25,6 +25,7 @@ Route::get('/', function () {
 // });
 
 Route::get('/wedding', [weddingController::class,'index']);
+Route::post('wedding/create', [weddingController::class,'weddingstore']);
 
 Route::get('/purse', [purseController::class,'index']);
 

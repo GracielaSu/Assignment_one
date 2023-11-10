@@ -18,6 +18,16 @@ class weddingController extends Controller
             'weddings' => $wedding
         ]);
     }
+    public function weddingstore(Request $request)
+    {
+        $newItems = new wedding;
+        $newItems->name= $request->name;
+        // $newItems->image_names = $request->image_names;
+        $newItems->price = $request->price;
+        $newItems->save();
+        return redirect('wedding'); //view ko pyan return pya
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -66,4 +76,5 @@ class weddingController extends Controller
     {
         //
     }
+
 }
