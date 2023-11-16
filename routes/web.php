@@ -30,3 +30,5 @@ Route::post('wedding/create', [weddingController::class,'weddingstore']);
 Route::get('/purse', [purseController::class,'index']);
 
 Route::get('/toys', [toyController::class,'index']);
+
+Route::resource("/editting", weddingController::class);
