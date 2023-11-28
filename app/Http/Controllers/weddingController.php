@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\wedding;
+use Illuminate\Support\Facades\Validator;
 
 class weddingController extends Controller
 {
@@ -39,16 +40,31 @@ class weddingController extends Controller
 
     public function weddingstore(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect('wedding')
+                ->with('error', 'Validation failed')
+                ->withErrors($validator)
+                ->withInput();  
+        }
+
         $newItems = new wedding;
         $newItems->name= $request->name;
         // $newItems->image_names = $request->image_names;
         $newItems->price = $request->price;
         $newItems->save();
-        return redirect('wedding'); //view ko pyan return pya
+        //return redirect('wedding'); //view ko pyan return pya
+        return redirect('wedding')->with('success', 'New item Created');
     }
 
     public function update_wedding(Request $request)
     {
+        
+        
         $wedding =wedding::find($request->id);
         $wedding->update([
             
@@ -61,6 +77,8 @@ class weddingController extends Controller
             // "updated_name=> $wedding->name
             // "updated_price=> $wedding->price
         ]);
+
+
     }
 
 
@@ -120,12 +138,23 @@ class weddingController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect(url('editting/'.$id.'/edit'))
+                ->with('error', 'Validation failed')
+                ->withErrors($validator)
+                ->withInput();
+        }
         $wedding =wedding::find($id);
         $wedding->update([
             "name"=> $request->name,
             "price"=> $request->price
         ]);
-        return redirect("/wedding")->with("success","Update success!");
+        return redirect("/wedding");
     }
 
     /**
